@@ -15,7 +15,7 @@ type Say struct {
 }
 
 func (t Say) Run(source cmd.Source, output *cmd.Output) {
-	msg := fmt.Sprintf("[%s] %s", string(t.Message), source.Name())
+	msg := fmt.Sprintf("[%s] %s", source.Name(), string(t.Message))
 	chat.Global.WriteString(msg)
 }
 
