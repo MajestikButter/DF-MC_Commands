@@ -15,6 +15,7 @@ var commands = []cmd.Command{
 	cmd.New("give", "Give items to a player", []string{"give"}, Give{}),
 	cmd.New("npc", "Manage NPCs", []string{"npc"}, NPCCreate{}, NPCEditGeometry{}, NPCEditName{}, NPCEditTexture{}, NPCEditAction{}),
 	cmd.New("sudo", "Run a command or send a message as a player", []string{"sudo"}, Sudo{}),
+	cmd.New("function", "Run a set of commands from an mcfunction file", []string{"function"}, Function{}),
 }
 
 func LoadCommands(withOut []string) {

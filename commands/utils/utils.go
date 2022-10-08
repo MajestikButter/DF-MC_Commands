@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"strings"
+
 	"github.com/MajestikButter/DF-MC_Commands/commands/cmdtypes"
 	system "github.com/MajestikButter/DF-MC_Commands/commands/shared"
 	"github.com/df-mc/dragonfly/server/cmd"
@@ -43,4 +45,11 @@ func ToPlayer(source interface{}) (*player.Player, bool) {
 		return sudo.Player, true
 	}
 	return nil, false
+}
+
+func FindCommand(cmdStr string) (*cmd.Command, string) {
+	commandName := strings.Split(cmdStr, " ")[0]
+	command, _ := cmd.ByAlias(commandName)
+
+	return &command, commandName
 }

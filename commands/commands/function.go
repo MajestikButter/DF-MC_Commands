@@ -7,7 +7,6 @@ import (
 	"path"
 	"strings"
 
-	"github.com/MajestikButter/DF-MC_Commands/commands/console"
 	"github.com/MajestikButter/DF-MC_Commands/commands/shared"
 	"github.com/MajestikButter/DF-MC_Commands/commands/utils"
 
@@ -83,6 +82,19 @@ func LoadFunctions() error {
 		return err
 	}
 
+	invalidCommands := ""
+	for fPath, contents := range res {
+		for i, cmd := range contents {
+			command, _ := utils.FindCommand(cmd)
+			if command == nil {
+				invalidCommands += fmt.Sprintf("  %s:%v\n", fPath, i)
+			}
+		}
+	}
+	if invalidCommands != "" {
+		return fmt.Errorf("invalid commands found:\n%s", invalidCommands)
+	}
+
 	tickContents, err := parseJSON(path.Join(dir, "tick.json"), res)
 	if err == nil {
 		res["tick.json"] = tickContents
@@ -107,7 +119,15 @@ func (f Function) Run(source cmd.Source, output *cmd.Output) {
 		output.Errorf("Unable to find function %s", f.Function)
 		return
 	}
-	console.ExecuteCommands(cmds, output)
+	for _, cmd := range cmds {
+		if strings.TrimSpace(cmd) == "" {
+			continue
+		}
+
+		command, commandName := utils.FindCommand(cmd)
+		args := strings.TrimPrefix(strings.TrimPrefix(cmd, commandName), " ")
+		command.Execute(args, source)
+	}
 }
 
 func (f Function) Allow(source cmd.Source) bool {

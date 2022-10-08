@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/MajestikButter/DF-MC_Commands/commands/utils"
 	"github.com/df-mc/dragonfly/server/cmd"
 )
 
@@ -26,21 +27,15 @@ func ExecuteCommands(cmds []string, output *cmd.Output) {
 		output.Printf("Ran %v commands", count)
 	}
 }
+
 func ExecuteCommand(cmdStr string, output bool) {
-	commandName := strings.Split(cmdStr, " ")[0]
-	command, ok := cmd.ByAlias(commandName)
-
-	if !ok {
-		if output {
-			return
-		}
-
+	command, commandName := utils.FindCommand(cmdStr)
+	if output {
 		output := &cmd.Output{}
 		output.Errorf("Unknown command '%v'", commandName)
 		for _, e := range output.Errors() {
 			fmt.Println(e)
 		}
-		return
 	}
 
 	args := strings.TrimPrefix(strings.TrimPrefix(cmdStr, commandName), " ")
