@@ -1,7 +1,9 @@
 package commands
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 	"path"
 	"strings"
@@ -50,6 +52,10 @@ func loadFuncDir(base, subDir string, r map[string][]string) error {
 	return nil
 }
 
+type TickJSON struct {
+	Values []string `json:"values"`
+}
+
 func LoadFunctions(dir string) error {
 	p := ""
 	if path.IsAbs(dir) {
@@ -66,6 +72,22 @@ func LoadFunctions(dir string) error {
 	err := loadFuncDir(p, "", res)
 	if err != nil {
 		return err
+	}
+
+	tickContents, err := os.ReadFile(path.Join(dir, "tick.json"))
+	if err == nil {
+		tick := TickJSON{}
+		err := json.Unmarshal(tickContents, &tick)
+		if err != nil {
+			return err
+		}
+		vals := []string{}
+		for _, v := range tick.Values {
+			if _, ok := res[v]; !ok || !strings.HasPrefix(v, ".mcfunction") {
+				return fmt.Errorf("error parsing tick.json: %s is not a valid function", v)
+			}
+		}
+		res["tick.json"] = vals
 	}
 
 	shared.Functions = res
