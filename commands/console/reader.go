@@ -14,20 +14,6 @@ import (
 var source = &Console{}
 var silencedSource = &Console{true}
 
-func ExecuteCommands(cmds []string, output *cmd.Output) {
-	count := 0
-	for _, cmd := range cmds {
-		if strings.TrimSpace(cmd) == "" {
-			continue
-		}
-		ExecuteCommand(cmd, false)
-		count++
-	}
-	if output != nil {
-		output.Printf("Ran %v commands", count)
-	}
-}
-
 func ExecuteCommand(cmdStr string, output bool) {
 	command, commandName := utils.FindCommand(cmdStr)
 	if output {

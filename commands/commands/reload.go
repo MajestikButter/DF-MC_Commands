@@ -15,7 +15,7 @@ func (t Reload) Run(source cmd.Source, output *cmd.Output) {
 
 	LoadFunctions()
 	if _, ok := shared.Functions["load.json"]; ok {
-		console.ExecuteCommands(shared.Functions["load.json"], nil)
+		console.ExecuteCommand("function load.json", false)
 	}
 
 	output.Printf("Reloaded files.")

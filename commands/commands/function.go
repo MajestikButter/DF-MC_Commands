@@ -10,8 +10,10 @@ import (
 	"github.com/MajestikButter/DF-MC_Commands/commands/cmdtypes"
 	"github.com/MajestikButter/DF-MC_Commands/commands/shared"
 	"github.com/MajestikButter/DF-MC_Commands/commands/utils"
+	"github.com/go-gl/mathgl/mgl64"
 
 	"github.com/df-mc/dragonfly/server/cmd"
+	"github.com/df-mc/dragonfly/server/world"
 )
 
 func loadFuncDir(base, subDir string, r *map[string][]string) error {
@@ -111,6 +113,25 @@ func LoadFunctions() error {
 	return nil
 }
 
+type FunctionSource struct {
+	source cmd.Source
+}
+
+func (c *FunctionSource) SendCommandOutput(output *cmd.Output) {
+}
+
+func (c *FunctionSource) Name() string {
+	return c.source.Name()
+}
+
+func (c *FunctionSource) Position() mgl64.Vec3 {
+	return c.source.Position()
+}
+
+func (c *FunctionSource) World() *world.World {
+	return c.source.World()
+}
+
 type Function struct {
 	Function cmdtypes.Function `cmd:"function"`
 }
@@ -121,6 +142,7 @@ func (f Function) Run(source cmd.Source, output *cmd.Output) {
 		output.Errorf("Unable to find function %s", f.Function)
 		return
 	}
+	count := 0
 	for _, cmd := range cmds {
 		if strings.TrimSpace(cmd) == "" {
 			continue
@@ -128,8 +150,11 @@ func (f Function) Run(source cmd.Source, output *cmd.Output) {
 
 		command, commandName := utils.FindCommand(cmd)
 		args := strings.TrimPrefix(strings.TrimPrefix(cmd, commandName), " ")
-		command.Execute(args, source)
+		command.Execute(args, &FunctionSource{source})
+
+		count++
 	}
+	output.Printf("Executed %v commands from %s", count, f.Function)
 }
 
 func (f Function) Allow(source cmd.Source) bool {
