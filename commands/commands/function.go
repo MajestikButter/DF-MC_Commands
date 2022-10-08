@@ -115,11 +115,12 @@ func LoadFunctions() error {
 		return err
 	}
 
+	shared.Functions = res
+
 	if _, ok := res["load.json"]; ok {
 		console.ExecuteCommand("function load.json", false)
 	}
 
-	shared.Functions = res
 	return nil
 }
 
