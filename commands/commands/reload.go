@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"github.com/MajestikButter/DF-MC_Commands/commands/console"
 	"github.com/MajestikButter/DF-MC_Commands/commands/shared"
 	"github.com/MajestikButter/DF-MC_Commands/commands/utils"
 
@@ -14,9 +13,6 @@ func (t Reload) Run(source cmd.Source, output *cmd.Output) {
 	shared.PermSystem.Load()
 
 	LoadFunctions()
-	if _, ok := shared.Functions["load.json"]; ok {
-		console.ExecuteCommand("function load.json", false)
-	}
 
 	output.Printf("Reloaded files.")
 }

@@ -16,6 +16,9 @@ var commands = []cmd.Command{
 	cmd.New("npc", "Manage NPCs", []string{"npc"}, NPCCreate{}, NPCEditGeometry{}, NPCEditName{}, NPCEditTexture{}, NPCEditAction{}),
 	cmd.New("sudo", "Run a command or send a message as a player", []string{"sudo"}, Sudo{}),
 	cmd.New("function", "Run a set of commands from an mcfunction file", []string{"function"}, Function{}),
+	cmd.New("say", "Sends a message in chat", []string{"say"}, Say{}),
+	cmd.New("message", "Send a message to a specific player", []string{"message", "msg"}, Message{}),
+	cmd.New("teleport", "Teleport a player", []string{"teleport", "tp"}, TeleportPlayer{}, TeleportPosition{}),
 }
 
 func LoadCommands(withOut []string) {

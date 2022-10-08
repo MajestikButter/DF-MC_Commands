@@ -302,5 +302,5 @@ func (t NPCEditRotation) Run(source cmd.Source, output *cmd.Output) {
 }
 
 func (t NPCEditRotation) Allow(source cmd.Source) bool {
-	return utils.CommandPermission(source, "minecraft.chat.command.npc.edit.position")
+	return utils.CommandPermission(source, "minecraft.chat.command.npc.edit.rotation")
 }

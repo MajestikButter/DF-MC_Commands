@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/MajestikButter/DF-MC_Commands/commands/cmdtypes"
+	"github.com/MajestikButter/DF-MC_Commands/commands/console"
 	"github.com/MajestikButter/DF-MC_Commands/commands/shared"
 	"github.com/MajestikButter/DF-MC_Commands/commands/utils"
 	"github.com/go-gl/mathgl/mgl64"
@@ -112,6 +113,10 @@ func LoadFunctions() error {
 		res["load.json"] = loadContents
 	} else if exists {
 		return err
+	}
+
+	if _, ok := res["load.json"]; ok {
+		console.ExecuteCommand("function load.json", false)
 	}
 
 	shared.Functions = res
