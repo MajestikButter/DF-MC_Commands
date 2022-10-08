@@ -13,7 +13,7 @@ var commands = []cmd.Command{
 	cmd.New("reload", "Reloads files.", []string{"reload"}, Reload{}),
 	cmd.New("clear", "Remove items from a player's inventory", []string{"clear"}, Clear{}),
 	cmd.New("give", "Give items to a player", []string{"give"}, Give{}),
-	cmd.New("npc", "Manage NPCs", []string{"npc"}, NPCCreate{}, NPCEditGeometry{}, NPCEditName{}, NPCEditTexture{}, NPCEditAction{}),
+	cmd.New("npc", "Manage NPCs", []string{"npc"}, NPCCreate{}, NPCEditGeometry{}, NPCEditName{}, NPCEditTexture{}, NPCEditAction{}, NPCDelete{}, NPCEditPosition{}, NPCEditRotation{}),
 	cmd.New("sudo", "Run a command or send a message as a player", []string{"sudo"}, Sudo{}),
 	cmd.New("function", "Run a set of commands from an mcfunction file", []string{"function"}, Function{}),
 	cmd.New("say", "Sends a message in chat", []string{"say"}, Say{}),
