@@ -46,25 +46,26 @@ type JSON struct {
 	Values []string `json:"values"`
 }
 
-func parseJSON(file string, res map[string][]string) ([]string, error) {
+func parseJSON(file string, res map[string][]string) ([]string, bool, error) {
 	contents, err := os.ReadFile(file)
-	if err == nil {
-		return nil, err
+	if err != nil {
+		return nil, false, err
 	}
 
 	fileStruct := JSON{}
 	err = json.Unmarshal(contents, &fileStruct)
 	if err != nil {
-		return nil, err
+		return nil, true, err
 	}
 
-	for i, v := range fileStruct.Values {
+	vals := fileStruct.Values
+	for i, v := range vals {
 		if _, ok := res[v]; !ok {
-			return nil, fmt.Errorf("error parsing tick.json: %s is not a valid function", v)
+			return nil, true, fmt.Errorf("error parsing tick.json: %s is not a valid function", v)
 		}
-		fileStruct.Values[i] = "function " + v
+		vals[i] = "function " + v
 	}
-	return fileStruct.Values, nil
+	return vals, true, nil
 }
 
 func LoadFunctions() error {
@@ -99,14 +100,18 @@ func LoadFunctions() error {
 		return fmt.Errorf("invalid commands found:\n%s", invalidCommands)
 	}
 
-	tickContents, err := parseJSON(path.Join(dir, "tick.json"), res)
+	tickContents, exists, err := parseJSON(path.Join(p, "tick.json"), res)
 	if err == nil {
 		res["tick.json"] = tickContents
+	} else if exists {
+		return err
 	}
 
-	loadContents, err := parseJSON(path.Join(dir, "load.json"), res)
+	loadContents, exists, err := parseJSON(path.Join(p, "load.json"), res)
 	if err == nil {
 		res["load.json"] = loadContents
+	} else if exists {
+		return err
 	}
 
 	shared.Functions = res
