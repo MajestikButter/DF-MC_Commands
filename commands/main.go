@@ -1,4 +1,4 @@
-package main
+package commands
 
 import (
 	"github.com/MajestikButter/DF-MC_Commands/commands/commands"
