@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"github.com/MajestikButter/DF-MC_Commands/cmdtypes"
-	system "github.com/MajestikButter/DF-MC_Commands/shared"
+	"github.com/MajestikButter/DF-MC_Commands/commands/cmdtypes"
+	system "github.com/MajestikButter/DF-MC_Commands/commands/shared"
 	"github.com/df-mc/dragonfly/server/cmd"
 	"github.com/df-mc/dragonfly/server/player"
 	"github.com/df-mc/dragonfly/server/world"

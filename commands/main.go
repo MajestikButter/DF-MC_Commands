@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/MajestikButter/DF-MC_Commands/commands"
-	"github.com/MajestikButter/DF-MC_Commands/console"
-	"github.com/MajestikButter/DF-MC_Commands/shared"
+	"github.com/MajestikButter/DF-MC_Commands/commands/commands"
+	"github.com/MajestikButter/DF-MC_Commands/commands/console"
+	"github.com/MajestikButter/DF-MC_Commands/commands/shared"
 	"github.com/MajestikButter/DF-MC_Permissions/permissions"
 	"github.com/df-mc/dragonfly/server"
 )

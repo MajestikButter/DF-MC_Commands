@@ -3,7 +3,7 @@ package console
 import (
 	"fmt"
 
-	system "github.com/MajestikButter/DF-MC_Commands/shared"
+	system "github.com/MajestikButter/DF-MC_Commands/commands/shared"
 	"github.com/df-mc/dragonfly/server/cmd"
 	"github.com/df-mc/dragonfly/server/world"
 	"github.com/go-gl/mathgl/mgl64"

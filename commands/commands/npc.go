@@ -3,8 +3,8 @@ package commands
 import (
 	"strings"
 
-	"github.com/MajestikButter/DF-MC_Commands/cmdtypes"
-	"github.com/MajestikButter/DF-MC_Commands/utils"
+	"github.com/MajestikButter/DF-MC_Commands/commands/cmdtypes"
+	"github.com/MajestikButter/DF-MC_Commands/commands/utils"
 	"github.com/go-gl/mathgl/mgl64"
 
 	"github.com/df-mc/dragonfly/server/cmd"

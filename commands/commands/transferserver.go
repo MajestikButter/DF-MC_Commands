@@ -3,7 +3,7 @@ package commands
 import (
 	"fmt"
 
-	"github.com/MajestikButter/DF-MC_Commands/utils"
+	"github.com/MajestikButter/DF-MC_Commands/commands/utils"
 	"github.com/df-mc/dragonfly/server/cmd"
 	"github.com/df-mc/dragonfly/server/player"
 )

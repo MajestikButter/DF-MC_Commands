@@ -1,8 +1,8 @@
 package commands
 
 import (
-	system "github.com/MajestikButter/DF-MC_Commands/shared"
-	"github.com/MajestikButter/DF-MC_Commands/utils"
+	system "github.com/MajestikButter/DF-MC_Commands/commands/shared"
+	"github.com/MajestikButter/DF-MC_Commands/commands/utils"
 
 	"github.com/df-mc/dragonfly/server/cmd"
 )
