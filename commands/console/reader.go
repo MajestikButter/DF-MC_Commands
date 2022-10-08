@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/MajestikButter/DF-MC_Commands/commands/utils"
-	"github.com/df-mc/dragonfly/server/cmd"
 )
 
 var source = &Console{}
@@ -16,12 +15,11 @@ var silencedSource = &Console{true}
 
 func ExecuteCommand(cmdStr string, output bool) {
 	command, commandName := utils.FindCommand(cmdStr)
-	if output {
-		output := &cmd.Output{}
-		output.Errorf("Unknown command '%v'", commandName)
-		for _, e := range output.Errors() {
-			fmt.Println(e)
+	if command == nil {
+		if output {
+			fmt.Printf("Unknown command '%v'\n", commandName)
 		}
+		return
 	}
 
 	args := strings.TrimPrefix(strings.TrimPrefix(cmdStr, commandName), " ")
@@ -31,6 +29,7 @@ func ExecuteCommand(cmdStr string, output bool) {
 		command.Execute(args, silencedSource)
 	}
 }
+
 func StartConsole() {
 	go func() {
 		time.Sleep(time.Millisecond * 500)
