@@ -9,9 +9,14 @@ import (
 	"github.com/go-gl/mathgl/mgl64"
 )
 
-type Console struct{}
+type Console struct {
+	silence bool
+}
 
-func (Console) SendCommandOutput(output *cmd.Output) {
+func (c *Console) SendCommandOutput(output *cmd.Output) {
+	if c.silence {
+		return
+	}
 	for _, m := range output.Messages() {
 		fmt.Println(m)
 	}
@@ -21,14 +26,14 @@ func (Console) SendCommandOutput(output *cmd.Output) {
 	}
 }
 
-func (Console) Name() string {
+func (*Console) Name() string {
 	return "Console"
 }
 
-func (Console) Position() mgl64.Vec3 {
+func (*Console) Position() mgl64.Vec3 {
 	return mgl64.Vec3{}
 }
 
-func (Console) World() *world.World {
+func (*Console) World() *world.World {
 	return system.Server.World()
 }

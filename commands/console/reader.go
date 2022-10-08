@@ -10,10 +10,49 @@ import (
 	"github.com/df-mc/dragonfly/server/cmd"
 )
 
+var source = &Console{}
+var silencedSource = &Console{true}
+
+func ExecuteCommands(cmds []string, output *cmd.Output) {
+	count := 0
+	for _, cmd := range cmds {
+		if strings.TrimSpace(cmd) == "" {
+			continue
+		}
+		ExecuteCommand(cmd, false)
+		count++
+	}
+	if output != nil {
+		output.Printf("Ran %v commands", count)
+	}
+}
+func ExecuteCommand(cmdStr string, output bool) {
+	commandName := strings.Split(cmdStr, " ")[0]
+	command, ok := cmd.ByAlias(commandName)
+
+	if !ok {
+		if output {
+			return
+		}
+
+		output := &cmd.Output{}
+		output.Errorf("Unknown command '%v'", commandName)
+		for _, e := range output.Errors() {
+			fmt.Println(e)
+		}
+		return
+	}
+
+	args := strings.TrimPrefix(strings.TrimPrefix(cmdStr, commandName), " ")
+	if output {
+		command.Execute(args, source)
+	} else {
+		command.Execute(args, silencedSource)
+	}
+}
 func StartConsole() {
 	go func() {
 		time.Sleep(time.Millisecond * 500)
-		source := &Console{}
 		fmt.Println("Type help for commands.")
 		scanner := bufio.NewScanner(os.Stdin)
 		for {
@@ -22,19 +61,7 @@ func StartConsole() {
 				if len(commandString) == 0 {
 					continue
 				}
-				commandName := strings.Split(commandString, " ")[0]
-				command, ok := cmd.ByAlias(commandName)
-
-				if !ok {
-					output := &cmd.Output{}
-					output.Errorf("Unknown command '%v'", commandName)
-					for _, e := range output.Errors() {
-						fmt.Println(e)
-					}
-					continue
-				}
-
-				command.Execute(strings.TrimPrefix(strings.TrimPrefix(commandString, commandName), " "), source)
+				ExecuteCommand(commandString, true)
 			}
 		}
 	}()

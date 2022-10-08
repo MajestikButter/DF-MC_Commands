@@ -118,6 +118,31 @@ func (t NPCCreate) Allow(source cmd.Source) bool {
 	return utils.CommandPermission(source, "minecraft.chat.command.npc.create")
 }
 
+type NPCDelete struct {
+	Delete cmd.SubCommand `cmd:"delete"`
+	Id     string         `cmd:"NPCId"`
+}
+
+func (t NPCDelete) Run(source cmd.Source, output *cmd.Output) {
+	id := string(t.Id)
+	sNPC, exists := npcs[id]
+	if !exists {
+		output.Errorf("No NPC with the identifier %s exists", id)
+		return
+	}
+	err := sNPC.Entity.Close()
+	if err != nil {
+		output.Errorf("Failed to remove NPC with the identifier %s", id)
+		return
+	}
+	delete(npcs, id)
+	output.Printf("Removed NPC with the identifier %s successfully", id)
+}
+
+func (t NPCDelete) Allow(source cmd.Source) bool {
+	return utils.CommandPermission(source, "minecraft.chat.command.npc.delete")
+}
+
 type NPCEditTexture struct {
 	Edit    cmd.SubCommand `cmd:"edit"`
 	Id      NPCId          `cmd:"NPCId"`
@@ -233,4 +258,49 @@ func (t NPCEditAction) Run(source cmd.Source, output *cmd.Output) {
 
 func (t NPCEditAction) Allow(source cmd.Source) bool {
 	return utils.CommandPermission(source, "minecraft.chat.command.npc.edit.action")
+}
+
+type NPCEditPosition struct {
+	Edit     cmd.SubCommand `cmd:"edit"`
+	Id       NPCId          `cmd:"NPCId"`
+	Pos      cmd.SubCommand `cmd:"position"`
+	Position mgl64.Vec3     `cmd:"position"`
+}
+
+func (t NPCEditPosition) Run(source cmd.Source, output *cmd.Output) {
+	id := string(t.Id)
+	sNPC, exists := npcs[id]
+	if !exists {
+		output.Errorf("No NPC with the identifier %s exists", id)
+		return
+	}
+
+	sNPC.Entity.Teleport(t.Position)
+}
+
+func (t NPCEditPosition) Allow(source cmd.Source) bool {
+	return utils.CommandPermission(source, "minecraft.chat.command.npc.edit.position")
+}
+
+type NPCEditRotation struct {
+	Edit     cmd.SubCommand `cmd:"edit"`
+	Id       NPCId          `cmd:"NPCId"`
+	Rot      cmd.SubCommand `cmd:"rotation"`
+	Rotation mgl64.Vec2     `cmd:"location"`
+}
+
+func (t NPCEditRotation) Run(source cmd.Source, output *cmd.Output) {
+	id := string(t.Id)
+	sNPC, exists := npcs[id]
+	if !exists {
+		output.Errorf("No NPC with the identifier %s exists", id)
+		return
+	}
+
+	rot := t.Rotation
+	sNPC.Entity.Move(mgl64.Vec3{}, t.Rotation.Y()-rot.Y(), t.Rotation.X()-rot.X())
+}
+
+func (t NPCEditRotation) Allow(source cmd.Source) bool {
+	return utils.CommandPermission(source, "minecraft.chat.command.npc.edit.position")
 }

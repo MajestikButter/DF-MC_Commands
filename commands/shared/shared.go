@@ -7,3 +7,4 @@ import (
 
 var PermSystem *permissions.PermissionSystem
 var Server *server.Server
+var Functions map[string][]string
