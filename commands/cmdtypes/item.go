@@ -13,7 +13,6 @@ func (Item) Type() string {
 	return "Item"
 }
 
-// Options returns a number for every plot the player has.
 func (Item) Options(source cmd.Source) []string {
 	items := map[string]bool{}
 	for _, v := range world.Items() {

@@ -7,6 +7,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/MajestikButter/DF-MC_Commands/commands/cmdtypes"
 	"github.com/MajestikButter/DF-MC_Commands/commands/shared"
 	"github.com/MajestikButter/DF-MC_Commands/commands/utils"
 
@@ -55,10 +56,11 @@ func parseJSON(file string, res map[string][]string) ([]string, error) {
 		return nil, err
 	}
 
-	for _, v := range fileStruct.Values {
+	for i, v := range fileStruct.Values {
 		if _, ok := res[v]; !ok {
 			return nil, fmt.Errorf("error parsing tick.json: %s is not a valid function", v)
 		}
+		fileStruct.Values[i] = "function " + v
 	}
 	return fileStruct.Values, nil
 }
@@ -110,11 +112,11 @@ func LoadFunctions() error {
 }
 
 type Function struct {
-	Function string `cmd:"function"`
+	Function cmdtypes.Function `cmd:"function"`
 }
 
 func (f Function) Run(source cmd.Source, output *cmd.Output) {
-	cmds, ok := shared.Functions[f.Function]
+	cmds, ok := shared.Functions[string(f.Function)]
 	if !ok {
 		output.Errorf("Unable to find function %s", f.Function)
 		return
