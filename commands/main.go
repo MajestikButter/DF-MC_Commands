@@ -33,9 +33,11 @@ func StartTickFunctions() error {
 	}
 
 	go func() {
-		time.Sleep(time.Second / 20)
+		for {
+			time.Sleep(time.Second / 20)
 
-		console.ExecuteCommand("function tick.json", false)
+			console.ExecuteCommand("function tick.json", false)
+		}
 	}()
 	return nil
 }
