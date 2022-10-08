@@ -34,8 +34,8 @@ func (s SudoSrc) SendCommandOutput(o *cmd.Output) {
 	s.OrgSource.SendCommandOutput(o)
 }
 
-func (SudoSrc) Name() string {
-	return "Sudo"
+func (s SudoSrc) Name() string {
+	return s.OrgSource.Name()
 }
 
 func (s SudoSrc) Position() mgl64.Vec3 {
